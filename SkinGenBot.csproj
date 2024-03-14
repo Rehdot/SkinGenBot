@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>SkinGenBot</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Graphics\BaseSkin.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DisCatSharp" Version="10.6.2-nightly-012" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.6.2-nightly-012" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Graphics\BaseSkin.png" />
+  </ItemGroup>
+
+</Project>
