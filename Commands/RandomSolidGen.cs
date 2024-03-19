@@ -2,34 +2,30 @@ using DisCatSharp.CommandsNext;
 using DisCatSharp.CommandsNext.Attributes;
 using DisCatSharp.Entities;
 
-namespace SkinGenBot;
+namespace SkinGenBot.Commands;
 
-public class RandomSkin : BaseCommandModule
+public class RandomSolidGen : BaseCommandModule
 {
     [Command("random")]
     public async Task RandomCommand(CommandContext ctx)
     {
-
-        string hex = Program.GenerateRandomHex();
-        
+        string hex = Colors.ColorToHex(Colors.GenerateRandomHex());
+        string path = Program.GetPath(hex);
         await ctx.RespondAsync($"Generating random hex...");
-
         try
         {
-            Program.ReplaceOldImage(hex);
+            Image.SolidGen(hex);
             if (Program.DebugMode) Console.WriteLine("DEBUG: Skin image generated.");
-            Program.SaveImage(hex);
-            if (Program.DebugMode) Console.WriteLine($"DEBUG: Skin image saved to {Program.GetPath(hex)}.");
+            Image.SaveImage(false, hex);
+            if (Program.DebugMode) Console.WriteLine($"DEBUG: Skin image saved to {path}.");
         }
         catch (Exception e)
         {
             await ctx.RespondAsync($"Input Error! {hex} is an unsupported format!");
         }
         
-        FileStream file = File.Open(Program.GetPath(hex), FileMode.Open);
-
+        FileStream file = File.Open(path, FileMode.Open);
         DiscordMessageBuilder builder = new DiscordMessageBuilder();
-
         builder.WithFile($"SkinGen_{hex}.png", file);
         builder.WithContent($"Result of random hex {hex}:");
 
@@ -37,10 +33,8 @@ public class RandomSkin : BaseCommandModule
         if (Program.DebugMode) Console.WriteLine($"DEBUG: Hex {hex} image successfully sent.");
         
         file.Close();
-        
-        File.Delete(Program.GetPath(hex));
+        File.Delete(path);
         if (Program.DebugMode) Console.WriteLine($"DEBUG: Hex {hex} image successfully deleted.");
-
     }
 
 }
