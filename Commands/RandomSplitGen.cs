@@ -13,7 +13,7 @@ public class RandomSplitGen : BaseCommandModule
         string hex2 = Colors.ColorToHex(Colors.GenerateRandomHex());
         string path = Program.GetPathSplitGen(hex1, hex2);
         
-        await ctx.RespondAsync($"Generating SplitGen With {hex1} and {hex2}...");
+        await ctx.RespondAsync($"Generating random SplitGen...");
         try
         {
             Image.SplitGen(hex1, hex2);
