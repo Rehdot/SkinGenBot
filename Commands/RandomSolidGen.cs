@@ -16,7 +16,7 @@ public class RandomSolidGen : BaseCommandModule
         {
             Image.SolidGen(hex);
             if (Program.DebugMode) Console.WriteLine("DEBUG: Skin image generated.");
-            Image.SaveImage(false, hex);
+            Image.SaveImage(hex);
             if (Program.DebugMode) Console.WriteLine($"DEBUG: Skin image saved to {path}.");
         }
         catch (Exception e)

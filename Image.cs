@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using System.Drawing;
 
 namespace SkinGenBot;
@@ -8,7 +7,9 @@ public class Image
     private static readonly Bitmap
         NewSkin = new(64, 64),
         SolidImage = new(GetImageReference("SkinGenBot.Graphics.BaseSkin.png")),
-        SplitImage = new(GetImageReference("SkinGenBot.Graphics.SplitGen.png"));
+        SplitImage = new(GetImageReference("SkinGenBot.Graphics.SplitGen.png")),
+        GradientImage = new(GetImageReference("SkinGenBot.Graphics.Gradient.png"));
+        
     private static readonly List<int> 
         HatCoords1 = new() { 0, 7, 8, 31, 1, 6, 9, 30, 2, 5, 10, 29, 3, 4, 11, 28 }, 
         HatCoords2 = new() { 15, 16, 23, 24, 14, 17, 22, 25, 13, 18, 21, 26, 12, 19, 20, 27 };
@@ -21,21 +22,27 @@ public class Image
         return stream;
     }
     
-    public static void SaveImage(bool splitGen, string input, [Optional] string input2)
+    public static void SaveImage(string input)
     {
-        if (splitGen)
-        {
-            Console.WriteLine($"SplitGen of {Colors.HexCheck(input)} & {Colors.HexCheck(input2)} generated. (Runtime generation #{Program.Counter})");
-            NewSkin.Save(Program.GetPathSplitGen(input, input2), System.Drawing.Imaging.ImageFormat.Png);
-            if (Program.ConsoleMode) Console.WriteLine($"Skin saved to {Program.GetPathSplitGen(input, input2)}");
-        }
-        else
-        {
-            Console.WriteLine($"Hex code {input} generated. (Runtime generation #{Program.Counter})");
-            NewSkin.Save(Program.GetPath(input), System.Drawing.Imaging.ImageFormat.Png);
-            if (Program.ConsoleMode) Console.WriteLine($"Skin saved to {Program.GetPath(input)}");
-        }
-        
+        Console.WriteLine($"Hex code {input} generated. (Runtime generation #{Program.Counter})");
+        NewSkin.Save(Program.GetPath(input), System.Drawing.Imaging.ImageFormat.Png);
+        if (Program.ConsoleMode) Console.WriteLine($"Skin saved to {Program.GetPath(input)}");
+        Program.Counter++;
+    }
+
+    public static void SaveImageSplitGen(string input, string input2)
+    {
+        Console.WriteLine($"SplitGen of {Colors.HexCheck(input)} & {Colors.HexCheck(input2)} generated. (Runtime generation #{Program.Counter})");
+        NewSkin.Save(Program.GetPathSplitGen(input, input2), System.Drawing.Imaging.ImageFormat.Png);
+        if (Program.ConsoleMode) Console.WriteLine($"Skin saved to {Program.GetPathSplitGen(input, input2)}");
+        Program.Counter++;
+    }
+
+    public static void SaveImageGradient(string input, string input2)
+    {
+        Console.WriteLine($"Gradient of {Colors.HexCheck(input)} & {Colors.HexCheck(input2)} generated. (Runtime generation #{Program.Counter})");
+        NewSkin.Save(Program.GetPathGradient(input, input2), System.Drawing.Imaging.ImageFormat.Png);
+        if (Program.ConsoleMode) Console.WriteLine($"Skin saved to {Program.GetPathGradient(input, input2)}");
         Program.Counter++;
     }
 
@@ -48,9 +55,7 @@ public class Image
                 if (NewSkin.GetPixel(x, y) == oldColor)
                     NewSkin.SetPixel(x, y, newColor);
             }
-                
         }
-        
     }
 
     public static void ReplaceCoord(int x, int y, Color newColor)
@@ -70,7 +75,7 @@ public class Image
         else
         {
             ReplaceColorValue(Colors.LeftColorList[0], leftColor);
-            ReplaceHatColors(true, false, leftColor, rightColor);
+            LightenHatColors(true, false, leftColor, rightColor);
         }
         
         if (!IsTooDark(rightColor))
@@ -78,8 +83,28 @@ public class Image
         else
         {
             ReplaceColorValue(Colors.RightColorList[0], rightColor);
-            ReplaceHatColors(false, true, leftColor, rightColor);
+            LightenHatColors(false, true, leftColor, rightColor);
         }
+    }
+
+    public static void GradientGen(string hex1, string hex2)
+    {
+        float factor = 0f;
+        Color color1 = Colors.HexToColor(Colors.HexCheck(hex1));
+        Color color2 = Colors.HexToColor(Colors.HexCheck(hex2));
+        DrawNewImage(GradientImage);
+        
+        if (!IsTooDark(color1))
+            ReplaceAllColors(Colors.SolidColorList, color1, 0.85f);
+        else
+            LightenHatColors(true, true, color1, color1);
+
+        foreach (Color color in Colors.GradientColorList)
+        {
+            ReplaceColorValue(color, Colors.MixColors(color1, color2, factor));
+            factor += 0.035f;
+        }
+        
     }
 
     public static void SolidGen(string hex)
@@ -94,12 +119,12 @@ public class Image
         else
         {
             ReplaceColorValue(Colors.SolidColorList[0], newColor);
-            ReplaceHatColors(true, true, newColor, newColor);
+            LightenHatColors(true, true, newColor, newColor);
         }
         
     }
 
-    private static void ReplaceHatColors(bool leftSide, bool rightSide, Color leftColor, Color rightColor)
+    private static void LightenHatColors(bool leftSide, bool rightSide, Color leftColor, Color rightColor)
     {
         if (leftSide)
         {

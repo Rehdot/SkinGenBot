@@ -18,7 +18,7 @@ public class SplitGen : BaseCommandModule
         {
             Image.SplitGen(hex1, hex2);
             if (Program.DebugMode) Console.WriteLine("DEBUG: SplitGen image generated.");
-            Image.SaveImage(true, hex1, hex2);
+            Image.SaveImageSplitGen(hex1, hex2);
             if (Program.DebugMode) Console.WriteLine($"DEBUG: Skin image saved to {path}.");
         }
         catch (Exception e)

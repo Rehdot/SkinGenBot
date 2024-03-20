@@ -42,5 +42,12 @@ class Program
         if (DebugMode) Console.WriteLine($"DEBUG: GetPathSplitGen called, directory: {tempPath}");
         return tempPath;
     }
+    
+    public static string GetPathGradient(string hex1, string hex2)
+    {
+        string tempPath = Environment.CurrentDirectory + $"\\GradientGen_{hex1}_{hex2}.png";
+        if (DebugMode) Console.WriteLine($"DEBUG: GetPathGradient called, directory: {tempPath}");
+        return tempPath;
+    }
 
 }

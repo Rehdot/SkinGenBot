@@ -22,6 +22,8 @@
         <EmbeddedResource Include="Graphics\BaseSkin.png"/>
         <None Remove="Graphics\SplitGen.png" />
         <EmbeddedResource Include="Graphics\SplitGen.png" />
+        <None Remove="Graphics\Gradient.png" />
+        <EmbeddedResource Include="Graphics\Gradient.png" />
     </ItemGroup>
 
 </Project>
