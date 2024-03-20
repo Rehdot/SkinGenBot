@@ -5,6 +5,7 @@ class Program
     
     public static int Counter = 1;
     public static bool DebugMode, ConsoleMode, EndMainThread;
+    public static string version = "v1.0.2";
     
     public static void Main()
     {
@@ -16,7 +17,7 @@ class Program
     
     private static void Init()
     {
-        switch (ConsoleApp.Input("One Of Us Skin Generator v1.0.1\n(D) Debug Bot Mode\n(C) Console Mode\n(B) Bot Mode\n-> ").ToLower())
+        switch (ConsoleApp.Input($"One Of Us Skin Generator {version}\n(D) Debug Bot Mode\n(C) Console Mode\n(B) Bot Mode\n-> ").ToLower())
         {
             case "d":
                 DebugMode = true;
