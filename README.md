@@ -2,22 +2,22 @@
 On startup, you can choose whether you want it to run in console mode or bot mode.
 
 **Console Mode**:
-- Saves skin files to the directory the exe is located in
-- Can generate both custom and random skin files
+- Saves skin files to the build's working directory
+- Supports the same features as bot mode
 
 **Bot Mode**:
 - Does not save skin files to your device
-- Can generate both custom and random skin files
-- Requires setup with bot token on first run of the exe
+- Requires setup with bot token on first run of the build
+- Supports all of the following commands
 
 **Commands**:
 - ?skin (hex)
 - ?random
 - ?splitgen (hex) (hex)
 - ?splitgenrandom
+- ?gradient (hex) (hex)
+- ?gradientrandom
 
 **Build Dependencies**:
 - Requires all .png files in the Graphics folder to be EmbeddedResources
 - Uses DisCatSharp (https://github.com/Aiko-IT-Systems/DisCatSharp)
-
-:)
