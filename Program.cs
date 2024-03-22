@@ -5,7 +5,7 @@ class Program
     
     public static int Counter = 1;
     public static bool DebugMode, ConsoleMode, EndMainThread;
-    public static string version = "v1.0.2";
+    public static string Version = "v1.0.2";
     
     public static void Main()
     {
@@ -17,7 +17,7 @@ class Program
     
     private static void Init()
     {
-        switch (ConsoleApp.Input($"One Of Us Skin Generator {version}\n(D) Debug Bot Mode\n(C) Console Mode\n(B) Bot Mode\n-> ").ToLower())
+        switch (ConsoleApp.Input($"One Of Us Skin Generator {Version}\n(D) Debug Bot Mode\n(C) Console Mode\n(B) Bot Mode\n-> ").ToLower())
         {
             case "d":
                 DebugMode = true;
@@ -36,6 +36,8 @@ class Program
         if (DebugMode) Console.WriteLine($"DEBUG: GetPath called, directory: {tempPath}");
         return tempPath;
     }
+
+    private string hexpath = GetPath("#123456");
     
     public static string GetPathSplitGen(string hex1, string hex2)
     {
